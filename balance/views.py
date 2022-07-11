@@ -8,10 +8,10 @@ def inicio():
 def nuevo():
     return "Crear movimiento"
 
-@app.route("/modificar", methods=["GET", "POST"])
-def actualizar():
-    return "Modificar movimiento"
+@app.route("/modificar/<int:id>", methods=["GET", "POST"])
+def actualizar(id):
+    return f"Modificar movimiento con ID:{id}"
 
-@app.route("/borrar", methods=["GET", "POST"])
-def eliminar():
-    return "Eliminar un movimiento"
+@app.route("/borrar/<int:id>", methods=["GET", "POST"])
+def eliminar(id):
+    return f"Eliminar un movimiento con ID: {id}"
