@@ -1,8 +1,14 @@
 from . import app #desde el modulo balance, importa la aplicacion flask
+from .models import DBManager
+from flask import render_template
+
+RUTA = "data/balance.db"
 
 @app.route("/")
 def inicio():
-    return "Pagina de inicio"
+    db = DBManager(RUTA)
+    movimientos = db.consultaSQL("SELECT * FROM movimientos")
+    return render_template("inicio.html", movs=movimientos)
 
 @app.route("/nuevo", methods=["GET", "POST"])
 def nuevo():
