@@ -37,7 +37,11 @@ Listado de movimientos
       {% endif %}
     </td>
     <td class="numero">{{ mov.cantidad }}</td>
-    <td class="acciones"><a class="mini-boton" href="/borrar/{{ mov.id }}">x</a></td>
+    <td class="acciones">
+      <a class="mini-boton" href="/borrar/{{ mov.id }}">x</a>
+      <a class="mini-boton" href="/modificar/{{ mov.id }}">Editar</a>
+    </td>
+    
   </tr>
   {% if mov.errores %}
   <tr>

@@ -1,4 +1,5 @@
 import sqlite3
+from unittest import result
 
 class DBManager:
     def __init__(self, ruta):
@@ -36,18 +37,42 @@ class DBManager:
         conexion.close()
         return self.movimientos
 
-    def borrar(self, id):
-        consulta = "DELETE from movimientos WHERE id=?"
+
+    def obtener_movimiento_por_id(self, id):
+        consulta= "SELECT * FROM movimientos WHERE id=?"
+        conexion = sqlite3.connect(self.ruta)
+        cursor = conexion.cursor()
+        cursor.execute(consulta, (id,))
+
+        nombres_columnas = []
+        
+        datos = cursor.fetchone()
+        resultado = None
+        if datos:
+            nombres_columnas = []
+            for desc_columna in cursor.description:
+                nombres_columnas.append(desc_columna[0])
+
+            movimiento = {}
+            indice = 0
+            for nombre in nombres_columnas:
+                movimiento[nombre] = datos[indice]
+                indice += 1
+            resultado = movimiento        
+
+        conexion.close()
+        return resultado
+
+    def consulta_con_parametros(self, consulta, params):
         conexion = sqlite3.connect(self.ruta)
         cursor = conexion.cursor()
         resultado = False
         try:
-            cursor.execute(consulta, (id,)) #DELETE from movimientos WHERE id=3
+            cursor.execute(consulta, params)
             conexion.commit()
             resultado = True
-        except:
+        except Exception as error:
+            print("ERROR DB:", error)
             conexion.rollback()
-        conexion.close()   
+        conexion.close()
         return resultado
-
-        
