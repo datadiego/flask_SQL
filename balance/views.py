@@ -4,7 +4,7 @@ from balance import forms
 from . import app #desde el modulo balance, importa la aplicacion flask
 from .models import DBManager
 from .forms import MovimientosForm
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, flash
 
 RUTA = "data/balance.db"
 
@@ -35,6 +35,7 @@ def actualizar(id):
             params = (form.fecha.data, form.concepto.data, form.tipo.data, form.cantidad.data, form.id.data)
             resultado = db.consulta_con_parametros(consulta, params)
             if resultado:
+                flash("Movimiento actualizado correctamente", category="exito")
                 return redirect(url_for("inicio"))
             return render_template("form_movimiento.html", form=form, id=id, errores=["No se ha podido guardar en la base de datos"])
         else:
